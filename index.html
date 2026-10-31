@@ -24,12 +24,12 @@
 
     .btn { border: 0; border-radius: 6px; padding: 8px 16px; font: inherit; color: #fff; cursor: pointer; }
     .btn:disabled { opacity: .6; cursor: not-allowed; }
-    .btn-primary { background: var(--primary); }
-    .btn-primary:hover:not(:disabled) { background: var(--primary-dark); }
-    .btn-success { background: var(--success); }
-    .btn-success:hover:not(:disabled) { background: var(--success-dark); }
-    .btn-danger { background: var(--danger); }
-    .btn-danger:hover:not(:disabled) { background: var(--danger-dark); }
+    .btn-primary { background: #8B5CF6; }
+    .btn-primary:hover:not(:disabled) { background: #7C3AED; }
+    .btn-success { background: #F59E0B; }
+    .btn-success:hover:not(:disabled) { background: #D97706; }
+    .btn-danger { background: #EF4444; }
+    .btn-danger:hover:not(:disabled) { background: #DC2626; }
     .btn-light { background: #e5e7eb; color: #1f2937; }
     .actions { display: flex; gap: 8px; flex-wrap: wrap; }
 
@@ -194,7 +194,7 @@
           const remove = document.createElement('button');
           remove.className = 'btn btn-danger';
           remove.textContent = 'Remove';
-          remove.onclick = () => removeCourse(c, remove);
+          remove.onclick = () => handleDelete(c.id, remove);
           actions.append(edit, remove);
           tr.append(
             cell('ID', String(c.id)), cell('Name', c.name), cell('Description', c.description),
@@ -261,12 +261,12 @@
       }
     });
 
-    async function removeCourse(c, button) {
-      if (!confirm('Remove "' + c.name + '"?')) return;
+    async function handleDelete(id, button) {
+      if (!confirm('Remove course #' + id + '?')) return;
       button.disabled = true;
       setLoading(true, 'Removing course...');
       try {
-        await request(API + '/' + c.id, { method: 'DELETE' });
+        await request(API + '/' + id, { method: 'DELETE' });
         showMessage('Course removed successfully', 'ok');
         await loadCourses();
       } catch (err) {
